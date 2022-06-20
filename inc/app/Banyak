@@ -1,0 +1,71 @@
+<?php 
+
+class Banyak extends Koneksi {
+
+    public function tampil()
+    {
+        $sql = "SELECT * FROM tb_banyak";
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute();
+
+        $data = [];
+
+        while ($rows = $stmt->fetch()) {
+            $data[] = $rows;
+        }
+
+        return $data;
+    }
+
+    public function simpan()
+    {
+        $kode_obat = $_POST['kode_obat'];
+        $banyak = $_POST['banyak'];
+
+        $sql = "INSERT INTO tb_banyak (kode_obat, banyak) VALUES (:no_nota, kode_obat, banyak)";
+        $stmt = $this->db->prepare($sql);
+        $stmt->bindParam(":kode_obat", $kode_obat);
+        $stmt->bindParam(":banyak", $banyak);
+        $stmt->execute();
+
+    }
+
+    public function edit($id)
+    {
+        
+        $sql = "SELECT * FROM tb_banyak WHERE no_nota=:no_nota";
+        $stmt = $this->db->prepare($sql);
+        $stmt->bindParam(":alb_id", $id);
+        $stmt->execute();
+
+        $row = $stmt->fetch();
+
+        return $row;
+    }
+
+    public function update()
+    {
+        $kode_obat= $_POST['kode_obat'];
+        $banyak= $_POST['banyak'];
+        $no_nota= $_POST['no_nota'];
+
+        $sql = "UPDATE tb_banyak SET kode_obat=:kode_obat, banyak=:banyak WHERE no_nota=:no_nota";
+        $stmt = $this->db->prepare($sql);
+        $stmt->bindParam(":kode_obat", $kode_obat);
+        $stmt->bindParam(":banyak", $banyak);
+        $stmt->bindParam(":no_nota", $no_nota);
+        $stmt->execute();
+
+    }
+
+    public function delete($id)
+    {
+        
+        $sql = "DELETE FROM tb_banyak WHERE no=:no_nota";
+        $stmt = $this->db->prepare($sql);
+        $stmt->bindParam(":no_nota", $id);
+        $stmt->execute();
+
+    }
+
+}
